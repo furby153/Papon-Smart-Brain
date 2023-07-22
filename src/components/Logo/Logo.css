@@ -8,6 +8,7 @@
     height: 150px;
     /* background-color: darkgreen; */
     background-color: #a45eff;
+    /* background: linear-gradient(89deg, #a45eff 0%, #d3d600 100%); */
     color: white;
     border: 5px solid #d3d600;
     border-radius: 20px;
