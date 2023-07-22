@@ -7,7 +7,7 @@ const Logo = () => {
     return (
         <div className='ma4 mt0'>
             <Tilt
-                className="parallax-effect-glare-scale"
+                className="center parallax-effect-glare-scale"
                 perspective={500}
                 glareEnable={true}
                 glareMaxOpacity={0.7}
