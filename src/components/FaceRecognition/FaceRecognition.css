@@ -1,5 +1,16 @@
 .imageToShow {
-    width: auto;
-    max-width: 500px;
-    max-height: 40vw;
+    /* position: absolute; */
+    width:500px;
+    height: auto;
+    /* max-width: 100vw;
+    max-height: 80vh; */
+}
+
+.bounding-box {
+    position: absolute;
+    box-shadow: 0 0 0 3px #149df2 inset;
+    display: flex;
+    flex-wrap: warp;
+    justify-content: center;
+    cursor: pointer;
 }
