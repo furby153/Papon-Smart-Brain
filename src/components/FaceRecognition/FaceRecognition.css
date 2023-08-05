@@ -1,4 +1,5 @@
 .imageToShow {
     width: auto;
+    max-width: 500px;
     max-height: 40vw;
 }
