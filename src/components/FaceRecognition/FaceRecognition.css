@@ -1,16 +1,24 @@
 .imageToShow {
-    /* position: absolute; */
-    width:500px;
+    min-width: 500px;
+    max-width: 100vw;
     height: auto;
-    /* max-width: 100vw;
-    max-height: 80vh; */
+    min-height: 740px;
+    max-height: 80vh;
+    object-fit: contain;
 }
 
 .bounding-box {
     position: absolute;
     box-shadow: 0 0 0 3px #149df2 inset;
     display: flex;
-    flex-wrap: warp;
+    flex-wrap: wrap;
     justify-content: center;
     cursor: pointer;
+}
+
+.center.ma {
+    position: relative;
+    width: 100%; /* Set the width to 100% or any other desired value */
+    display: flex;
+    justify-content: center;
 }
