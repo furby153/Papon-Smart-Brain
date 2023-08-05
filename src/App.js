@@ -20,7 +20,7 @@ const returnClarifaiRequestOptions = (imageUrl) => {
     const USER_ID = 'paponmat';       
     const APP_ID = 'Smart-Brain';
     // Change these to whatever model and image URL you want to use
-    const MODEL_ID = 'face-detection';
+    // const MODEL_ID = 'face-detection';
     // const MODEL_VERSION_ID = '6dc7e46bc9124c5c8824be4822abe105';    
     const IMAGE_URL = imageUrl;
 
@@ -53,7 +53,7 @@ const returnClarifaiRequestOptions = (imageUrl) => {
       body: raw
     };
 
-    return { requestOptions, MODEL_ID };
+    return requestOptions;
 }
 
 class App extends React.Component {
@@ -70,19 +70,21 @@ class App extends React.Component {
     this.setState({ input: event.target.value});
   }
 
-  onButtonSubmit = () => {
+  onButtonSubmit = async () => {
     this.setState({imageUrlState: this.state.input});
-
-    const { requestOptions, MODEL_ID } = returnClarifaiRequestOptions(this.state.input);
     
+    const MODEL_ID = 'face-detection'
+
     // NOTE: MODEL_VERSION_ID is optional, you can also call prediction with the MODEL_ID only
     // https://api.clarifai.com/v2/models/{YOUR_MODEL_ID}/outputs
     // this will default to the latest version_id
-    fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs", requestOptions)
-        .then(response => response.text())
-        // .then(response => response.json())
-        .then(result => console.log(result))
-        .catch(error => console.log('error', error));
+    try {
+      const response = await fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs", returnClarifaiRequestOptions(this.state.input));
+      const result = await response.json();
+      console.log(result.outputs[0].data.regions[0].region_info.bounding_box);
+    } catch (error) {
+      console.log('error', error);
+    }
 
   }
   
