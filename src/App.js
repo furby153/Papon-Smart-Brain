@@ -104,21 +104,41 @@ class App extends React.Component {
     this.setState({ input: event.target.value});
   }
 
-  onButtonSubmit = async () => {
-    this.setState({imageUrlState: this.state.input});
+  onPicturesSubmit = async () => {
+    this.setState({ imageUrlState: this.state.input });
     // Change this to whatever model you want to use
-    const MODEL_ID = 'face-detection'
-
+    const MODEL_ID = 'face-detection';
+  
     try {
-      const response = await fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs", returnClarifaiRequestOptions(this.state.input));
+      const response = await fetch(
+        "https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs",
+        returnClarifaiRequestOptions(this.state.input)
+      );
+      
+      if (response) {
+        const fetchResponse = await fetch('http://localhost:3000/image', {
+          method: 'put',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: this.state.user.id
+          }),
+        });
+  
+        const count = await fetchResponse.json();
+  
+        this.setState(
+          Object.assign(this.state.user, 
+            {entries: count}
+          ));
+      }
+  
       const result = await response.json();
       // console.log(result.outputs[0].data.regions[0].region_info.bounding_box);
       this.displayFaceBox(this.calculateFaceLocation(result));
     } catch (error) {
       console.log('error', error);
     }
-
-  }
+  };
 
   onRouteChange = (route) => {
     if (route === 'signout') {
@@ -143,7 +163,7 @@ class App extends React.Component {
               /> 
               <ImageLinkForm 
                 onInputChange={this.onInputChange} 
-                onButtonSubmit={this.onButtonSubmit}
+                onPicturesSubmit={this.onPicturesSubmit}
               />
               <FaceRecognition 
                 box={box}
