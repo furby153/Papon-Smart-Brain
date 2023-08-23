@@ -7,6 +7,7 @@ class SignIn extends React.Component {
         this.state = {
             signInEmail: '',
             signInPassword: '',
+            signInStatus: '',
         };
         this.passwordInputRef = React.createRef();
     }
@@ -34,9 +35,12 @@ class SignIn extends React.Component {
             if (user.id) {
                 this.props.loadUser(user);
                 this.props.onRouteChange('home');
+            } else {
+                this.setState({ signInStatus: 'error' }); // Set status to 'error' on unsuccessful sign-in
             }
         } catch (error) {
             console.error('Error signing in:', error);
+            this.setState({ signInStatus: 'error' }); // Set status to 'error' on error
         }
     };
 
@@ -52,6 +56,13 @@ class SignIn extends React.Component {
 
     render() {
         const { onRouteChange } = this.props;
+        const { signInStatus } = this.state;
+
+        let alertMessage = null;
+        if (signInStatus === 'error') {
+            alertMessage = <p className="red">Sign-in failed. Please check your credentials.</p>;
+        }
+
         return (
             <article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
                 <main className="pa4 black-80">
@@ -103,6 +114,7 @@ class SignIn extends React.Component {
                             </p>
                         </div>
                     </div>
+                    {alertMessage}
                 </main>
             </article>
         );
