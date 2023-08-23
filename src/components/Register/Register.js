@@ -32,7 +32,6 @@ class Register extends React.Component {
         } else {
             this.setState({ email: email , emailPatternStatus: 'error' });
         }
-
         this.setState({registerStatus: ''})
     };
     
