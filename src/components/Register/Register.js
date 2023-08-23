@@ -32,16 +32,29 @@ class Register extends React.Component {
 
     onSubmitRegister = async () => {
         try {
+            const { name, email, password } = this.state;
+
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailPattern.test(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+    
+            if (name.trim() === '' || email.trim() === '' || password.trim() === '') {
+                alert('Please fill in all fields.');
+                return;
+            }
+    
             const response = await fetch('http://localhost:3000/register', {
                 method: 'post',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    name: this.state.name,
-                    email: this.state.email,
-                    password: this.state.password,
+                    name,
+                    email,
+                    password,
                 }),
             });
-
+    
             const user = await response.json();
             if (user) {
                 this.props.loadUser(user);
@@ -51,6 +64,7 @@ class Register extends React.Component {
             console.error('Error Registerating:', error);
         }
     };
+    
 
     handleKeyDown = (event, nextInputRef, action) => {
         if (event.key === 'Enter') {
