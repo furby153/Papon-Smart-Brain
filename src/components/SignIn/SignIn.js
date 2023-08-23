@@ -41,6 +41,8 @@ class SignIn extends React.Component {
         } catch (error) {
             console.error('Error signing in:', error);
             this.setState({ signInStatus: 'error' }); // Set status to 'error' on error
+        } finally {
+            this.setState({ signInPassword: '' }); // Clear password field regardless of the outcome
         }
     };
 
@@ -92,6 +94,7 @@ class SignIn extends React.Component {
                                     type="password"
                                     name="password"
                                     id="password"
+                                    value={this.state.signInPassword}
                                     onChange={this.onPasswordChange}
                                     onKeyDown={this.handleKeyPress}
                                 />

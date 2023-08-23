@@ -1,4 +1,5 @@
 import React from 'react';
+import './Register.css';
 
 class Register extends React.Component {
     constructor(props) {
@@ -7,44 +8,48 @@ class Register extends React.Component {
             name: '',
             email: '',
             password: '',
+            registerStatus: '',
+            emailPatternStatus: '',
         };
         this.emailInputRef = React.createRef();
         this.passwordInputRef = React.createRef();
     }
 
+    isEmailValid(email) {
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailPattern.test(email);
+    }
+
     onNameChange = (event) => {
-        this.setState({ name: event.target.value });
+        this.setState({ name: event.target.value , registerStatus: '' });
     };
 
     onEmailChange = (event) => {
         const email = event.target.value;
-        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     
-        if (emailPattern.test(email) || email === '') {
-            this.setState({ email });
+        if (this.isEmailValid(email) || email === '') {
+            this.setState({ email: email , emailPatternStatus: '' });
+        } else {
+            this.setState({ email: email , emailPatternStatus: 'error' });
         }
+
+        this.setState({registerStatus: ''})
     };
     
 
     onPasswordChange = (event) => {
-        this.setState({ password: event.target.value });
+        this.setState({ password: event.target.value , registerStatus: ''  });
     };
 
     onSubmitRegister = async () => {
         try {
             const { name, email, password } = this.state;
-
-            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            if (!emailPattern.test(email)) {
-                alert('Please enter a valid email address.');
+    
+            if (name.trim() === '' || email.trim() === '' || password.trim() === '' || !this.isEmailValid(email)) {
+                this.setState({registerStatus: 'error'});
                 return;
             }
-    
-            if (name.trim() === '' || email.trim() === '' || password.trim() === '') {
-                alert('Please fill in all fields.');
-                return;
-            }
-    
+            
             const response = await fetch('http://localhost:3000/register', {
                 method: 'post',
                 headers: { 'Content-Type': 'application/json' },
@@ -70,28 +75,16 @@ class Register extends React.Component {
         if (event.key === 'Enter') {
             event.preventDefault();
             if (action === 'move') {
-                if (this.validateEmail()) {
-                    nextInputRef.current.focus();
-                } else {
-                    alert('Please enter a valid email address.');
-                }
+                nextInputRef.current.focus();
             } else if (action === 'submit') {
                 this.onSubmitRegister();
             }
         }
     };
 
-    validateEmail = () => {
-        const { email } = this.state;
-        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-        if (emailPattern.test(email)) {
-            return true;
-        }
-        return false;
-    };
-
     render() {
+        const { registerStatus, emailPatternStatus } = this.state;
+
         return (
             <article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
                 <main className="pa4 black-80">
@@ -159,6 +152,12 @@ class Register extends React.Component {
                             />
                         </div>
                     </div>
+                    {registerStatus === 'error' && (
+                        <p className="red">Register failed. Please fill out all fields.</p>
+                    )}
+                    {emailPatternStatus === 'error' && (
+                        <p className="red">Please enter a valid email address.</p>
+                    )}
                 </main>
             </article>
         ); 
