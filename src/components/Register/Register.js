@@ -26,15 +26,14 @@ class Register extends React.Component {
 
     onEmailChange = (event) => {
         const email = event.target.value;
-    
-        if (this.isEmailValid(email) || email === '') {
-            this.setState({ email: email , emailPatternStatus: '' });
-        } else {
-            this.setState({ email: email , emailPatternStatus: 'error' });
-        }
-        this.setState({registerStatus: ''})
+        const isValid = this.isEmailValid(email) || email === '';
+
+        this.setState({
+            emailPatternStatus: isValid ? '' : 'error',
+            email: email,
+            registerStatus: ''
+        });
     };
-    
 
     onPasswordChange = (event) => {
         this.setState({ password: event.target.value , registerStatus: ''  });
@@ -44,7 +43,11 @@ class Register extends React.Component {
         try {
             const { name, email, password } = this.state;
     
-            if (name.trim() === '' || email.trim() === '' || password.trim() === '' || !this.isEmailValid(email)) {
+            if (name.trim() === '' 
+                || email.trim() === '' 
+                || password.trim() === '' 
+                || !this.isEmailValid(email)
+                ) {
                 this.setState({registerStatus: 'error'});
                 return;
             }

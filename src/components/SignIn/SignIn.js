@@ -8,26 +8,50 @@ class SignIn extends React.Component {
             signInEmail: '',
             signInPassword: '',
             signInStatus: '',
+            emailPatternStatus: '',
         };
         this.passwordInputRef = React.createRef();
     }
 
+    isEmailValid(email) {
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailPattern.test(email);
+    }
+
     onEmailChange = (event) => {
-        this.setState({ signInEmail: event.target.value });
+        const email = event.target.value;
+        const isValid = this.isEmailValid(email) || email === '';
+    
+        this.setState({
+            emailPatternStatus: isValid ? '' : 'error',
+            signInEmail: email,
+            signInStatus: ''
+        });
     };
+    
 
     onPasswordChange = (event) => {
-        this.setState({ signInPassword: event.target.value });
+        this.setState({ 
+            signInPassword: event.target.value ,
+            signInStatus: ''
+        });
     };
 
     onSubmitSignIn = async () => {
         try {
+            const { signInEmail, signInPassword } = this.state;
+
+            if (!this.isEmailValid(signInEmail)) {
+                this.setState({signInStatus: 'error'});
+                return;
+            }
+
             const response = await fetch('http://localhost:3000/signin', {
                 method: 'post',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    email: this.state.signInEmail,
-                    password: this.state.signInPassword,
+                    email: signInEmail,
+                    password: signInPassword,
                 }),
             });
 
@@ -58,12 +82,7 @@ class SignIn extends React.Component {
 
     render() {
         const { onRouteChange } = this.props;
-        const { signInStatus } = this.state;
-
-        let alertMessage = null;
-        if (signInStatus === 'error') {
-            alertMessage = <p className="red">Sign-in failed. Please check your credentials.</p>;
-        }
+        const { signInStatus, emailPatternStatus } = this.state;
 
         return (
             <article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
@@ -117,7 +136,12 @@ class SignIn extends React.Component {
                             </p>
                         </div>
                     </div>
-                    {alertMessage}
+                    {signInStatus === 'error' && (
+                        <p className="red">Sign-in failed. Please check your credentials.</p>
+                    )}
+                    {emailPatternStatus === 'error' && (
+                        <p className="red">Please enter a valid email address.</p>
+                    )}
                 </main>
             </article>
         );
