@@ -58,12 +58,21 @@ class Register extends React.Component {
                     password,
                 }),
             });
-    
+            
+            if (response.status === 400) {
+                const errorMessage = await response.json();
+                if (errorMessage === 'Email already exists') {
+                    this.setState({ registerStatus: 'email-exists' });
+                    return;
+                }
+            }
+
             const user = await response.json();
             if (user) {
                 this.props.loadUser(user);
                 this.props.onRouteChange('home');
             }
+         
         } catch (error) {
             console.error('Error Registerating:', error);
         }
@@ -156,6 +165,9 @@ class Register extends React.Component {
                     )}
                     {emailPatternStatus === 'error' && (
                         <p className="red">Please enter a valid email address.</p>
+                    )}
+                    {registerStatus === 'email-exists' && (
+                        <p className="red">Email is already exists.</p>
                     )}
                 </main>
             </article>
