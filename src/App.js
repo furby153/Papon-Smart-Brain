@@ -9,19 +9,14 @@ import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 
-const returnClarifaiRequestOptions = (imageUrl) => {
-    // Your PAT (Personal Access Token) can be found in the portal under Authentification
-    const PAT = 'c5399a2074724d5e9e660023be3cd7d1';
-    // Specify the correct user_id/app_id pairings
-    // Since you're making inferences outside your app's scope
-    const USER_ID = 'paponmat';       
-    const APP_ID = 'Smart-Brain';
-    // const MODEL_VERSION_ID = '6dc7e46bc9124c5c8824be4822abe105';    
-    const IMAGE_URL = imageUrl;
+const PAT = 'c5399a2074724d5e9e660023be3cd7d1';
+const USER_ID = 'paponmat';  
+const APP_ID = 'Smart-Brain';
+const MODEL_ID = 'face-detection';
 
-    ///////////////////////////////////////////////////////////////////////////////////
-    // YOU DO NOT NEED TO CHANGE ANYTHING BELOW THIS LINE TO RUN THIS EXAMPLE
-    ///////////////////////////////////////////////////////////////////////////////////
+const returnClarifaiRequestOptions = (imageUrl) => {
+  
+    const IMAGE_URL = imageUrl;
 
     const raw = JSON.stringify({
       "user_app_id": {
@@ -51,23 +46,25 @@ const returnClarifaiRequestOptions = (imageUrl) => {
     return requestOptions;
 }
 
+const initialState = {
+  input: '',
+  imageUrlState: '',
+  box: {},
+  route:'signin',
+  isSignedIn: false,
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined: '',
+  }
+}
+
 class App extends React.Component {
   constructor() {
     super();
-    this.state = {
-      input: '',
-      imageUrlState: '',
-      box: {},
-      route:'signin',
-      isSignedIn: false,
-      user: {
-        id: '',
-        name: '',
-        email: '',
-        entries: 0,
-        joined: '',
-      }
-    }
+    this.state = initialState;
   }  
 
   loadUser = (data) => {
@@ -106,9 +103,7 @@ class App extends React.Component {
 
   onPicturesSubmit = async () => {
     this.setState({ imageUrlState: this.state.input });
-    // Change this to whatever model you want to use
-    const MODEL_ID = 'face-detection';
-  
+ 
     try {
       const response = await fetch(
         "https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs",
@@ -124,12 +119,12 @@ class App extends React.Component {
           }),
         });
   
-        const count = await fetchResponse.json();
+      const count = await fetchResponse.json();
   
-        this.setState(
-          Object.assign(this.state.user, 
-            {entries: count}
-          ));
+      this.setState(
+        Object.assign(this.state.user, 
+          {entries: count}
+        ));
       }
   
       const result = await response.json();
@@ -142,9 +137,9 @@ class App extends React.Component {
 
   onRouteChange = (route) => {
     if (route === 'signout') {
-      this.setState({isSignedIn: false})
+      this.setState(initialState);
     } else if (route === 'home') {
-      this.setState({isSignedIn: true})
+      this.setState({isSignedIn: true});
     }
     this.setState({route: route});
   }
