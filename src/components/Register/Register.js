@@ -135,6 +135,12 @@ class Register extends React.Component {
                                     ref={this.emailInputRef}
                                     onKeyDown={(event) => this.handleKeyDown(event, this.passwordInputRef, 'move')}
                                 />
+                                {registerStatus === 'email-exists' && (
+                                    <p className="red">Email is already exists.</p>
+                                )}
+                                {emailPatternStatus === 'error' && (
+                                    <p className="red">Please enter a valid email address.</p>
+                                )}
                             </div>
                             <div className="mv3">
                                 <label 
@@ -166,12 +172,6 @@ class Register extends React.Component {
                     </div>
                     {registerStatus === 'error' && (
                         <p className="red">Register failed. Please fill out all fields.</p>
-                    )}
-                    {registerStatus === 'email-exists' && (
-                        <p className="red">Email is already exists.</p>
-                    )}
-                    {emailPatternStatus === 'error' && (
-                        <p className="red">Please enter a valid email address.</p>
                     )}
                 </main>
             </article>
