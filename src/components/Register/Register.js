@@ -167,11 +167,11 @@ class Register extends React.Component {
                     {registerStatus === 'error' && (
                         <p className="red">Register failed. Please fill out all fields.</p>
                     )}
-                    {emailPatternStatus === 'error' && (
-                        <p className="red">Please enter a valid email address.</p>
-                    )}
                     {registerStatus === 'email-exists' && (
                         <p className="red">Email is already exists.</p>
+                    )}
+                    {emailPatternStatus === 'error' && (
+                        <p className="red">Please enter a valid email address.</p>
                     )}
                 </main>
             </article>
