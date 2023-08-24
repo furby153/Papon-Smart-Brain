@@ -43,12 +43,13 @@ class Register extends React.Component {
         try {
             const { name, email, password } = this.state;
     
-            if (name.trim() === '' 
-                || email.trim() === '' 
-                || password.trim() === '' 
-                || !this.isEmailValid(email)
-                ) {
-                this.setState({registerStatus: 'error'});
+            if (!name.trim() || !email.trim() || !password.trim()) {
+                this.setState({ registerStatus: 'error' });
+                return;
+            }
+
+            if (!this.isEmailValid(email)) {
+                this.setState({ emailPatternStatus: 'error' });
                 return;
             }
             
