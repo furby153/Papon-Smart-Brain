@@ -102,6 +102,9 @@ class SignIn extends React.Component {
                                     onChange={this.onEmailChange}
                                     onKeyDown={this.handleKeyPress}
                                 />
+                                {emailPatternStatus === 'error' && (
+                                    <p className="red">Please enter a valid email address.</p>
+                                )}
                             </div>
                             <div className="mv3">
                                 <label className="db fw6 lh-copy f6" htmlFor="password">
@@ -138,9 +141,6 @@ class SignIn extends React.Component {
                     </div>
                     {signInStatus === 'error' && (
                         <p className="red">Sign-in failed. Please check your credentials.</p>
-                    )}
-                    {emailPatternStatus === 'error' && (
-                        <p className="red">Please enter a valid email address.</p>
                     )}
                 </main>
             </article>
