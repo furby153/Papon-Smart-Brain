@@ -78,6 +78,9 @@ class App extends React.Component {
       });
       
       if (response) {
+        const faceData = await response.json();
+        this.displayFaceBox(this.calculateFaceLocation(faceData));
+
         const fetchResponse = await fetch(
           'http://localhost:3000/image', {
           method: 'put',
@@ -92,13 +95,8 @@ class App extends React.Component {
       this.setState(
         Object.assign(this.state.user, 
           {entries: count}
-        ));
+        ));     
       }
-  
-      const result = await response.json();
-      console.log(result);
-      // console.log(result.outputs[0].data.regions[0].region_info.bounding_box);
-      this.displayFaceBox(this.calculateFaceLocation(result));
     } catch (error) {
       console.log('error', error);
     }
