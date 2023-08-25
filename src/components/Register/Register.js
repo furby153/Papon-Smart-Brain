@@ -72,7 +72,7 @@ class Register extends React.Component {
             }
 
             const user = await response.json();
-            if (user) {
+            if (user.id) {
                 this.props.loadUser(user);
                 this.props.onRouteChange('home');
             }
