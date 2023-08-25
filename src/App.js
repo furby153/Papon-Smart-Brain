@@ -9,43 +9,6 @@ import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 
-const PAT = 'c5399a2074724d5e9e660023be3cd7d1';
-const USER_ID = 'paponmat';  
-const APP_ID = 'Smart-Brain';
-const MODEL_ID = 'face-detection';
-
-const returnClarifaiRequestOptions = (imageUrl) => {
-  
-    const IMAGE_URL = imageUrl;
-
-    const raw = JSON.stringify({
-      "user_app_id": {
-          "user_id": USER_ID,
-          "app_id": APP_ID
-      },
-      "inputs": [
-          {
-              "data": {
-                  "image": {
-                      "url": IMAGE_URL
-                  }
-              }
-          }
-      ]
-    });
-
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-          'Accept': 'application/json',
-          'Authorization': 'Key ' + PAT
-      },
-      body: raw
-    };
-
-    return requestOptions;
-}
-
 const initialState = {
   input: '',
   imageUrlState: '',
@@ -106,12 +69,17 @@ class App extends React.Component {
  
     try {
       const response = await fetch(
-        "https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs",
-        returnClarifaiRequestOptions(this.state.input)
-      );
+        'http://localhost:3000/clarifai', {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            input: this.state.input
+          }),
+      });
       
       if (response) {
-        const fetchResponse = await fetch('http://localhost:3000/image', {
+        const fetchResponse = await fetch(
+          'http://localhost:3000/image', {
           method: 'put',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -128,6 +96,7 @@ class App extends React.Component {
       }
   
       const result = await response.json();
+      console.log(result);
       // console.log(result.outputs[0].data.regions[0].region_info.bounding_box);
       this.displayFaceBox(this.calculateFaceLocation(result));
     } catch (error) {
