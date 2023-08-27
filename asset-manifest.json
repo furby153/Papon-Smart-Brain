@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/Papon-Smart-Brain/static/css/main.40b6dcd2.css",
+    "main.js": "/Papon-Smart-Brain/static/js/main.7f2f29db.js",
+    "static/js/787.0f32bd6d.chunk.js": "/Papon-Smart-Brain/static/js/787.0f32bd6d.chunk.js",
+    "static/media/brain-ai.png": "/Papon-Smart-Brain/static/media/brain-ai.610e1112f72ae9b8900a.png",
+    "index.html": "/Papon-Smart-Brain/index.html",
+    "main.40b6dcd2.css.map": "/Papon-Smart-Brain/static/css/main.40b6dcd2.css.map",
+    "main.7f2f29db.js.map": "/Papon-Smart-Brain/static/js/main.7f2f29db.js.map",
+    "787.0f32bd6d.chunk.js.map": "/Papon-Smart-Brain/static/js/787.0f32bd6d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.40b6dcd2.css",
+    "static/js/main.7f2f29db.js"
+  ]
+}
