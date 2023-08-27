@@ -25,7 +25,6 @@ const initialState = {
 }
 
 const hostToConnect = 'https://papon-smart-brain-api.onrender.com';
-// const hostToConnect = 'http://localhost:3000';
 
 class App extends React.Component {
   constructor() {
