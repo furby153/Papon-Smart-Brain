@@ -40,13 +40,14 @@ class SignIn extends React.Component {
     onSubmitSignIn = async () => {
         try {
             const { signInEmail, signInPassword } = this.state;
+            const { hostToConnect } = this.props;
 
             if (!this.isEmailValid(signInEmail)) {
                 this.setState({signInStatus: 'error'});
                 return;
             }
 
-            const response = await fetch('http://localhost:3000/signin', {
+            const response = await fetch(`${hostToConnect}/signin`, {
                 method: 'post',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

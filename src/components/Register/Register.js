@@ -42,6 +42,7 @@ class Register extends React.Component {
     onSubmitRegister = async () => {
         try {
             const { name, email, password } = this.state;
+            const { hostToConnect } = this.props;
     
             if (!name.trim() || !email.trim() || !password.trim()) {
                 this.setState({ registerStatus: 'error' });
@@ -53,7 +54,7 @@ class Register extends React.Component {
                 return;
             }
             
-            const response = await fetch('http://localhost:3000/register', {
+            const response = await fetch(`${hostToConnect}/register`, {
                 method: 'post',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

@@ -24,6 +24,8 @@ const initialState = {
   }
 }
 
+const hostToConnect = 'http://localhost:3000';
+
 class App extends React.Component {
   constructor() {
     super();
@@ -60,7 +62,7 @@ class App extends React.Component {
   }
 
   onInputChange = (event) => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     this.setState({ input: event.target.value});
   }
 
@@ -69,7 +71,7 @@ class App extends React.Component {
  
     try {
       const response = await fetch(
-        'http://localhost:3000/clarifai', {
+        `${hostToConnect}/clarifai`, {
           method: 'post',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -82,7 +84,7 @@ class App extends React.Component {
         this.displayFaceBox(this.calculateFaceLocation(faceData));
 
         const fetchResponse = await fetch(
-          'http://localhost:3000/image', {
+          `${hostToConnect}/image`, {
           method: 'put',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -137,10 +139,12 @@ class App extends React.Component {
               ? <SignIn 
                   onRouteChange={this.onRouteChange}
                   loadUser={this.loadUser}
+                  hostToConnect={hostToConnect}
                 />
               : <Register 
                   onRouteChange={this.onRouteChange}
                   loadUser={this.loadUser}
+                  hostToConnect={hostToConnect}
                 />
             )
         }
